@@ -100,7 +100,7 @@ const DihedralSection = () => {
         />
       </div>
       <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl select-all rounded-b mx-2">
-        {d2s(reduceDihedral(parseDihedral(src), sides))}
+        {d2s(reduceDihedral(parseDihedral(src.toLowerCase()), sides))}
       </div>
     </Section>
   );
