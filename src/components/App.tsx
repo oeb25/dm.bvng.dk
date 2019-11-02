@@ -23,7 +23,7 @@ const Section: React.FC<{
   const [showInfo, setShowInfo] = React.useState(false);
   return (
     <section className="flex flex-col mt-3">
-      <div className="border-b flex items-baseline">
+      <div className="border-b flex items-baseline px-2">
         <h3 className="text-xl flex-1">{title}</h3>
         <a
           className="text-gray-600 underline hover:text-gray-400"
