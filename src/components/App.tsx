@@ -108,21 +108,23 @@ const DihedralSection = () => {
 
 export const App = () => {
   return (
-    <div className="max-w-lg w-screen shadow-xl mx-auto pb-16">
+    <div className="max-w-lg w-screen min-h-screen flex flex-col mx-auto pb-3">
       <header className="py-6">
         <h1 className="text-4xl text-center font-thin">
           Tools for discrete mathematics
         </h1>
-        <p>
+        <p className="italic text-gray-500 mx-6">
           A collection of small tools to ease the manual labor, so you can focus
           on the important parts.
         </p>
       </header>
 
-      <PermutationSection />
-      <DihedralSection />
+      <div className="flex flex-col flex-1">
+        <PermutationSection />
+        <DihedralSection />
+      </div>
 
-      <div className="fixed bg-gray-900 text-gray-600 bottom-0 left-0 right-0 h-12 flex items-center justify-center">
+      <div className="bg-gray-900 text-gray-600 flex items-center justify-center">
         <p>
           Created by{" "}
           <a
