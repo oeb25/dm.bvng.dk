@@ -124,7 +124,7 @@ export const App = () => {
         <DihedralSection />
       </div>
 
-      <div className="bg-gray-900 text-gray-600 flex items-center justify-center">
+      <div className="bg-gray-900 text-gray-600 pt-6 flex items-center justify-center">
         <p>
           Created by{" "}
           <a
