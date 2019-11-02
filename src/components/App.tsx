@@ -3,47 +3,45 @@ import { PermutationSection } from "./PermutationSection";
 import { DihedralSection } from "./DihedralSection";
 import { HomomorphismSection } from "./HomomorphismSection";
 
-export const App = () => {
-  return (
-    <div className="max-w-lg w-screen min-h-screen flex flex-col mx-auto pb-3">
-      <header className="py-6">
-        <h1 className="text-4xl text-center font-thin">
-          Tools for discrete mathematics
-        </h1>
-        <p className="italic text-gray-500 mx-6">
-          A collection of small tools to ease the manual labor, so you can focus
-          on the important parts.
-        </p>
-      </header>
+export const App = () => (
+  <div className="max-w-lg w-screen min-h-screen flex flex-col mx-auto pb-3">
+    <header className="py-6">
+      <h1 className="text-4xl text-center font-thin">
+        Tools for discrete mathematics
+      </h1>
+      <p className="italic text-gray-500 mx-6">
+        A collection of small tools to ease the manual labor, so you can focus
+        on the important parts.
+      </p>
+    </header>
 
-      <div className="flex flex-col flex-1">
-        <PermutationSection />
-        <DihedralSection />
-        <HomomorphismSection />
-      </div>
-
-      <div className="text-gray-600 pt-6 flex items-center justify-center">
-        <p>
-          Created by{" "}
-          <a
-            href="https://github.com/oeb25"
-            target="_blank"
-            className="underline hover:text-gray-400"
-          >
-            Oliver Bøving
-          </a>
-        </p>
-        <a
-          className="absolute right-0 mr-4 hover:text-gray-400"
-          target="_blank"
-          href="https://github.com/oeb25/dm.bvng.dk"
-        >
-          <GitHubLogo />
-        </a>
-      </div>
+    <div className="flex flex-col flex-1">
+      <PermutationSection />
+      <DihedralSection />
+      <HomomorphismSection />
     </div>
-  );
-};
+
+    <div className="text-gray-600 pt-6 flex items-center justify-center">
+      <p>
+        Created by{" "}
+        <a
+          href="https://github.com/oeb25"
+          target="_blank"
+          className="underline hover:text-gray-400"
+        >
+          Oliver Bøving
+        </a>
+      </p>
+      <a
+        className="absolute right-0 mr-4 hover:text-gray-400"
+        target="_blank"
+        href="https://github.com/oeb25/dm.bvng.dk"
+      >
+        <GitHubLogo />
+      </a>
+    </div>
+  </div>
+);
 
 const GitHubLogo = () => (
   <svg

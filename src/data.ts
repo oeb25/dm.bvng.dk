@@ -65,70 +65,27 @@ export type Op = ["r" | "s", number];
 export type Dihedral = Op[];
 
 export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
-  if (n <= 0) {
-    return d;
+  let [r, s] = d.reduceRight(
+    ([r, s], [t, n]) => {
+      return t == "r" ? [r + n, s] : [-r, s + n];
+    },
+    [0, 0]
+  );
+
+  const p: Dihedral = [];
+  // TODO: Do in constant time
+  while (r < 0) {
+    r += n;
   }
-
-  let complete = false;
-
-  while (!complete) {
-    complete = true;
-
-    d = d
-      .map(([t, m]) => {
-        const k = t == "r" ? n : 2;
-        // TODO: Do this in constant time
-        while (m < 0) {
-          m += k;
-        }
-        return [t, m % k] as Op;
-      })
-      .filter(([_, m]) => m);
-
-    // NOTE: Fold r's and s's
-    let i = 0;
-    while (i < d.length - 1) {
-      let a = d[i],
-        b = d[i + 1];
-      if (a[0] == b[0]) {
-        d.splice(i, 1);
-
-        const k = a[0] == "r" ? n : 2;
-        d[i][1] = (d[i][1] + a[1]) % k;
-        if (d[i][1] == 0) {
-          d.splice(i, 1);
-        }
-      } else {
-        i += 1;
-      }
-    }
-
-    // NOTE: Flip sr -> r-1 s
-    i = 0;
-    while (i < d.length - 1) {
-      let a = d[i],
-        b = d[i + 1];
-      if (a[0] == "s" && b[0] == "r") {
-        let m = -b[1];
-
-        // TODO: Do on constant time
-        while (m < 0) {
-          m += n;
-        }
-        d[i] = ["r", m % n];
-        d[i + 1] = ["s", 1];
-        if (d[i][1] == 0) {
-          d.splice(i, 1);
-        }
-        complete = false;
-        break;
-      } else {
-        i += 1;
-      }
-    }
+  while (s < 0) {
+    s += n;
   }
+  r = r % n;
+  s = s % 2;
+  if (r > 0) p.push(["r", r]);
+  if (s > 0) p.push(["s", s]);
 
-  return d;
+  return p;
 };
 
 export const parseDihedral = (src: string): Dihedral =>
