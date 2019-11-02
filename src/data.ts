@@ -67,7 +67,7 @@ export type Dihedral = Op[];
 export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
   let [r, s] = d.reduceRight(
     ([r, s], [t, n]) => {
-      return t == "r" ? [r + n, s] : [-r, s + n];
+      return t == "r" ? [r + n, s] : [n % 2 == 0 ? r : -r, s + n];
     },
     [0, 0]
   );
