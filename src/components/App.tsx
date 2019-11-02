@@ -8,7 +8,8 @@ import {
   d2s,
   reduceDihedral,
   parseDihedral,
-  range
+  range,
+  mapPermutation
 } from "../data";
 
 const Code: React.FC = ({ children }) => (
@@ -19,7 +20,7 @@ const Section: React.FC<{
   title: React.ReactNode;
   description: JSX.Element;
 }> = ({ title, description, children }) => {
-  const [showInfo, setShowInfo] = React.useState(true);
+  const [showInfo, setShowInfo] = React.useState(false);
   return (
     <section className="flex flex-col mt-3">
       <div className="border-b flex items-baseline">
@@ -108,12 +109,14 @@ const DihedralSection = () => {
 };
 
 const HomomorphismSection = () => {
-  const [sidesText, setSidesText] = React.useState("5");
-  const [xText, setXText] = React.useState("3");
+  const [sidesText, setSidesText] = React.useState("6");
+  const [xText, setXText] = React.useState("1");
+  const [snText, setSnText] = React.useState("6");
   const [doSort, setDoSort] = React.useState(false);
-  const [src, setSrc] = React.useState("(1 3 5 7 9)");
+  const [src, setSrc] = React.useState("(3 4 5)");
   const sides = parseInt(sidesText) || 1;
   const x = parseInt(xText) || 1;
+  const sn = parseInt(snText) || 1;
 
   const s = parsePermutation(src);
 
@@ -138,19 +141,34 @@ const HomomorphismSection = () => {
       }
       description={
         <>
-          Computes all the groups given by the homomorphism, starting with the
-          given base case. The syntax is inherited by the permutations.
+          Computes all the permutations given by the homomorphism, starting with
+          the given base case. The syntax is inherited by the permutations. On
+          the left is the <Code>Z mod n</Code> base case, followed by the
+          permutation, lastly the <Code>n</Code> in{" "}
+          <Code>
+            S<sub>n</sub>
+          </Code>
+          . In the right most column is the number of fixed elements in the
+          given permutation. The last row contains Burnsides Lemma, computing
+          the number of orbits, found in the center column.
         </>
       }
     >
       <div className="text-center text-gray-200 border flex shadow-xl rounded-t mx-2">
-        <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 flex">
+        <div className="text-center bg-gray-900 pl-4 p-2 shadow-xl rounded-t w-32 flex">
           φ(
           <input
-            className="text-center bg-gray-900 w-8"
+            className="text-center bg-gray-900 w-6"
             type="number"
             value={xText}
             onChange={e => setXText(e.target.value)}
+          />
+          mod
+          <input
+            className="text-center bg-gray-900 w-6"
+            type="number"
+            value={sidesText}
+            onChange={e => setSidesText(e.target.value)}
           />
           )=
         </div>
@@ -161,34 +179,59 @@ const HomomorphismSection = () => {
           onChange={e => setSrc(e.target.value)}
         />
         <input
-          className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20"
+          className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-32 text-right pr-4"
           type="number"
-          value={sidesText}
-          onChange={e => setSidesText(e.target.value)}
+          value={snText}
+          onChange={e => setSnText(e.target.value)}
         />
       </div>
-      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl rounded-b mx-2 flex flex-col relative">
-        <div className="absolute right-0 top-0 p-3 text-gray-700 select-none">
-          <label className="cursor-pointer">
-            Sort{" "}
-            <input
-              className="cursor-pointer"
-              type="checkbox"
-              checked={doSort}
-              onChange={e => setDoSort(e.target.checked)}
-            />
-          </label>
-        </div>
-        {result.map(([n, p]) => (
-          <div className="flex" key={n}>
-            <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 flex">
+      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 mx-2 flex justify-start">
+        <label className="cursor-pointer select-none">
+          Sort{" "}
+          <input
+            className="cursor-pointer"
+            type="checkbox"
+            checked={doSort}
+            onChange={e => setDoSort(e.target.checked)}
+          />
+        </label>
+      </div>
+      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 mx-2 flex flex-col relative">
+        {result.map(([n, p], i) => (
+          <div className="flex" key={i}>
+            <div className="text-center bg-gray-900 p-2 shadow-xl w-20 flex">
               φ({n})=
             </div>
-            <div className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t pr-20 mr-2 select-all">
+            <div className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t select-all">
               {p2s(reducePermutation(p))}
+            </div>
+            <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 text-right pr-4">
+              #{range(1, sn).filter(n => mapPermutation(n, p) == n).length}
             </div>
           </div>
         ))}
+      </div>
+      <div className="text-center bg-gray-900 border border-t-0 p-2 shadow-xl rounded-b mx-2 flex flex relative">
+        <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-64 flex">
+          Burnsides Lemma
+        </div>
+        <div className="text-center bg-gray-900 p-2 flex-1 w-12">
+          {result
+            .map(
+              ([n, p], i) =>
+                range(1, sn).filter(n => mapPermutation(n, p) == n).length
+            )
+            .reduce((a, b) => a + b, 0) / sides}
+        </div>
+        <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-64 text-right pr-4">
+          #
+          {result
+            .map(
+              ([n, p], i) =>
+                range(1, sn).filter(n => mapPermutation(n, p) == n).length
+            )
+            .reduce((a, b) => a + b, 0)}
+        </div>
       </div>
     </Section>
   );
