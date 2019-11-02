@@ -62,6 +62,10 @@ export type Op = ["r" | "s", number];
 export type Dihedral = Op[];
 
 export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
+  if (n <= 0) {
+    return d;
+  }
+
   d = d.map(([t, m]) => {
     const k = t == "r" ? n : 2;
     // TODO: Do this in constant time

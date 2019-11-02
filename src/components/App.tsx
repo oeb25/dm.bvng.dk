@@ -68,8 +68,9 @@ const PermutationSection = () => {
 };
 
 const DihedralSection = () => {
-  const [sides, setSides] = React.useState(5);
+  const [sidesText, setSidesText] = React.useState("5");
   const [src, setSrc] = React.useState("r-4 s3 r r^25");
+  const sides = parseInt(sidesText) || 1;
 
   return (
     <Section
@@ -94,8 +95,8 @@ const DihedralSection = () => {
         <input
           className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-12"
           type="number"
-          value={sides}
-          onChange={e => setSides(parseInt(e.target.value) || 0)}
+          value={sidesText}
+          onChange={e => setSidesText(e.target.value)}
         />
       </div>
       <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl select-all rounded-b mx-2">
