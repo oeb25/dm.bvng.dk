@@ -44,6 +44,9 @@ export const reducePermutation = (p: Permutation) => {
   return p2;
 };
 
+export const concatPermutations = (p1: Permutation, p2: Permutation) =>
+  p1.concat(p2);
+
 export const c2s = (c: Cycle) => `(${c.join(" ")})`;
 export const p2s = (p: Permutation) =>
   p.length == 0 ? "id" : p.map(c2s).join("");

@@ -7,7 +7,8 @@ import {
   parsePermutation,
   d2s,
   reduceDihedral,
-  parseDihedral
+  parseDihedral,
+  range
 } from "../data";
 
 const Code: React.FC = ({ children }) => (
@@ -106,6 +107,74 @@ const DihedralSection = () => {
   );
 };
 
+const HomomorphismSection = () => {
+  const [sidesText, setSidesText] = React.useState("5");
+  const [xText, setXText] = React.useState("3");
+  const [src, setSrc] = React.useState("(1 3 5 7 9)");
+  const sides = parseInt(sidesText) || 1;
+  const x = parseInt(xText) || 1;
+
+  const s = parsePermutation(src);
+
+  return (
+    <Section
+      title={
+        <>
+          Homomorphism of <Code>Z mod n</Code> to{" "}
+          <Code>
+            S<sub>n</sub>
+          </Code>
+        </>
+      }
+      description={
+        <>
+          Computes all the groups given by the homomorphism, starting with the
+          given base case. The syntax is inherited by the permutations.
+        </>
+      }
+    >
+      <div className="text-center text-gray-200 border flex shadow-xl rounded-t mx-2">
+        <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 flex">
+          y(
+          <input
+            className="text-center bg-gray-900 w-8"
+            type="number"
+            value={xText}
+            onChange={e => setXText(e.target.value)}
+          />
+          )=
+        </div>
+        <input
+          className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t"
+          type="text"
+          value={src}
+          onChange={e => setSrc(e.target.value)}
+        />
+        <input
+          className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20"
+          type="number"
+          value={sidesText}
+          onChange={e => setSidesText(e.target.value)}
+        />
+      </div>
+      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl select-all rounded-b mx-2 flex flex-col">
+        {range(0, sides - 1)
+          .reduce((acc, p) => [...acc, acc[p].concat(s)], [s])
+          .map((p, n) => (
+            <div className="flex" key={n}>
+              <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 flex">
+                y({(x * (n + 1)) % sides})=
+              </div>
+              <div className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t pr-20 mr-2">
+                {p2s(reducePermutation(p))}
+              </div>
+            </div>
+          ))}
+      </div>
+    </Section>
+  );
+};
+
 export const App = () => {
   return (
     <div className="max-w-lg w-screen min-h-screen flex flex-col mx-auto pb-3">
@@ -122,6 +191,7 @@ export const App = () => {
       <div className="flex flex-col flex-1">
         <PermutationSection />
         <DihedralSection />
+        <HomomorphismSection />
       </div>
 
       <div className="bg-gray-900 text-gray-600 pt-6 flex items-center justify-center">
