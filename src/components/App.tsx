@@ -110,11 +110,21 @@ const DihedralSection = () => {
 const HomomorphismSection = () => {
   const [sidesText, setSidesText] = React.useState("5");
   const [xText, setXText] = React.useState("3");
+  const [doSort, setDoSort] = React.useState(false);
   const [src, setSrc] = React.useState("(1 3 5 7 9)");
   const sides = parseInt(sidesText) || 1;
   const x = parseInt(xText) || 1;
 
   const s = parsePermutation(src);
+
+  const computed = range(0, sides - 1).reduce<[number, Permutation][]>(
+    (acc, p) => [
+      ...acc,
+      [(acc[p][0] + x) % sides, acc[p][1].concat(s) as Permutation]
+    ],
+    [[x, s]]
+  );
+  const result = doSort ? computed.sort((a, b) => a[0] - b[0]) : computed;
 
   return (
     <Section
@@ -135,7 +145,7 @@ const HomomorphismSection = () => {
     >
       <div className="text-center text-gray-200 border flex shadow-xl rounded-t mx-2">
         <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 flex">
-          y(
+          φ(
           <input
             className="text-center bg-gray-900 w-8"
             type="number"
@@ -157,19 +167,28 @@ const HomomorphismSection = () => {
           onChange={e => setSidesText(e.target.value)}
         />
       </div>
-      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl select-all rounded-b mx-2 flex flex-col">
-        {range(0, sides - 1)
-          .reduce((acc, p) => [...acc, acc[p].concat(s)], [s])
-          .map((p, n) => (
-            <div className="flex" key={n}>
-              <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 flex">
-                y({(x * (n + 1)) % sides})=
-              </div>
-              <div className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t pr-20 mr-2">
-                {p2s(reducePermutation(p))}
-              </div>
+      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl rounded-b mx-2 flex flex-col relative">
+        <div className="absolute right-0 top-0 p-3 text-gray-700 select-none">
+          <label className="cursor-pointer">
+            Sort{" "}
+            <input
+              className="cursor-pointer"
+              type="checkbox"
+              checked={doSort}
+              onChange={e => setDoSort(e.target.checked)}
+            />
+          </label>
+        </div>
+        {result.map(([n, p]) => (
+          <div className="flex" key={n}>
+            <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 flex">
+              φ({n})=
             </div>
-          ))}
+            <div className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t pr-20 mr-2 select-all">
+              {p2s(reducePermutation(p))}
+            </div>
+          </div>
+        ))}
       </div>
     </Section>
   );
