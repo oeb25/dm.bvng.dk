@@ -107,7 +107,7 @@ const DihedralSection = () => {
 
 export const App = () => {
   return (
-    <div className="w-lg max-w-screen shadow-xl mx-auto pb-16">
+    <div className="max-w-lg w-screen shadow-xl mx-auto pb-16">
       <header className="py-6">
         <h1 className="text-4xl text-center font-thin">
           Tools for discrete mathematics
