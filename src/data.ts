@@ -73,12 +73,11 @@ export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
   );
 
   const p: Dihedral = [];
-  // TODO: Do in constant time
-  while (r < 0) {
-    r += n;
+  if (r < 0) {
+    r += n * Math.ceil(-r / n);
   }
-  while (s < 0) {
-    s += n;
+  if (s < 0) {
+    s += 2 * Math.ceil(-s / 2);
   }
   r = r % n;
   s = s % 2;
