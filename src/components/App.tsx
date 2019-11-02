@@ -56,7 +56,7 @@ const PermutationSection = () => {
     >
       <input
         className="text-center bg-gray-900 text-gray-200 border p-2 shadow-xl rounded-t mx-2"
-        type="tel"
+        type="text"
         value={src}
         onChange={e => setSrc(e.target.value)}
       />
@@ -87,7 +87,7 @@ const DihedralSection = () => {
       <div className="text-center text-gray-200 border flex shadow-xl rounded-t mx-2">
         <input
           className="text-center pl-12 bg-gray-900 p-2 flex-1 shadow-xl rounded-t"
-          type="tel"
+          type="text"
           value={src}
           onChange={e => setSrc(e.target.value)}
         />
@@ -107,7 +107,7 @@ const DihedralSection = () => {
 
 export const App = () => {
   return (
-    <div className="w-screen h-screen max-w-lg shadow-xl mx-auto">
+    <div className="w-lg max-w-screen shadow-xl mx-auto pb-16">
       <header className="py-6">
         <h1 className="text-4xl text-center font-thin">
           Tools for discrete mathematics
@@ -121,7 +121,7 @@ export const App = () => {
       <PermutationSection />
       <DihedralSection />
 
-      <div className="fixed bottom-0 left-0 right-0 h-12 border-t flex items-center justify-center">
+      <div className="fixed bg-gray-900 bottom-0 left-0 right-0 h-12 border-t flex items-center justify-center">
         <p>
           Made with ♥ by{" "}
           <a
