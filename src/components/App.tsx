@@ -122,19 +122,19 @@ export const App = () => {
       <PermutationSection />
       <DihedralSection />
 
-      <div className="fixed bg-gray-900 bottom-0 left-0 right-0 h-12 border-t flex items-center justify-center">
+      <div className="fixed bg-gray-900 text-gray-600 bottom-0 left-0 right-0 h-12 flex items-center justify-center">
         <p>
-          Made with ♥ by{" "}
+          Created by{" "}
           <a
             href="https://github.com/oeb25"
             target="_blank"
-            className="underline"
+            className="underline hover:text-gray-400"
           >
             Oliver Bøving
           </a>
         </p>
         <a
-          className="absolute right-0 mr-4 text-gray-200"
+          className="absolute right-0 mr-4 hover:text-gray-400"
           target="_blank"
           href="https://github.com/oeb25/dm.bvng.dk"
         >
