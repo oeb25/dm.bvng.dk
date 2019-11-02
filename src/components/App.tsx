@@ -57,12 +57,12 @@ const PermutationSection = () => {
       }
     >
       <input
-        className="text-center bg-gray-900 text-gray-200 border p-2 shadow-xl rounded-t mx-2"
+        className="text-center bg-gray-900 text-gray-200 border p-2 rounded-t mx-2"
         type="text"
         value={src}
         onChange={e => setSrc(e.target.value)}
       />
-      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl select-all rounded-b mx-2">
+      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 select-all rounded-b mx-2">
         {p2s(reducePermutation(parsePermutation(src)))}
       </div>
     </Section>
@@ -79,29 +79,29 @@ const DihedralSection = () => {
       title="Dihedral group"
       description={
         <>
-          Reduce dihedrals to their smallest form. Type out operation (
+          Reduce dihedrals to their smallest form. Syntax is type of operation (
           <Code>r</Code>, <Code>s</Code>), followed by their number of
           applications. Adjust the number of sides of the <Code>n</Code>-gon on
           the right. Most operators are optional, including parenthesis and{" "}
-          <Code>^</Code>. Ex: <Code>r-4 s3 r r^25</Code>
+          <Code>^</Code>. Ex: <Code>r(-4) s3 r r^2 = r-4 s3 r r2</Code>
         </>
       }
     >
-      <div className="text-center text-gray-200 border flex shadow-xl rounded-t mx-2">
+      <div className="text-center text-gray-200 border flex rounded-t mx-2">
         <input
-          className="text-center pl-12 bg-gray-900 p-2 flex-1 shadow-xl rounded-t"
+          className="text-center pl-12 bg-gray-900 p-2 flex-1 rounded-t"
           type="text"
           value={src}
           onChange={e => setSrc(e.target.value)}
         />
         <input
-          className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-12"
+          className="text-center bg-gray-900 p-2 rounded-t w-12"
           type="number"
           value={sidesText}
           onChange={e => setSidesText(e.target.value)}
         />
       </div>
-      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 shadow-xl select-all rounded-b mx-2">
+      <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 select-all rounded-b mx-2">
         {d2s(reduceDihedral(parseDihedral(src.toLowerCase()), sides))}
       </div>
     </Section>
@@ -154,32 +154,34 @@ const HomomorphismSection = () => {
         </>
       }
     >
-      <div className="text-center text-gray-200 border flex shadow-xl rounded-t mx-2">
-        <div className="text-center bg-gray-900 pl-4 p-2 shadow-xl rounded-t w-32 flex">
+      <div className="text-center text-gray-200 border flex rounded-t mx-2">
+        <div className="text-center bg-gray-900 p-2 w-32 flex items-center">
           φ(
           <input
-            className="text-center bg-gray-900 w-6"
+            className="text-center bg-gray-900 w-8"
             type="number"
             value={xText}
             onChange={e => setXText(e.target.value)}
           />
-          mod
+          <span className="text-xs">mod</span>
           <input
-            className="text-center bg-gray-900 w-6"
+            className="text-center bg-gray-900 w-8"
             type="number"
             value={sidesText}
             onChange={e => setSidesText(e.target.value)}
           />
           )=
         </div>
+        <div className="flex-1">
+          <input
+            className="text-center bg-gray-900 p-2 w-full"
+            type="text"
+            value={src}
+            onChange={e => setSrc(e.target.value)}
+          />
+        </div>
         <input
-          className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t"
-          type="text"
-          value={src}
-          onChange={e => setSrc(e.target.value)}
-        />
-        <input
-          className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-32 text-right pr-4"
+          className="text-center bg-gray-900 p-2 w-32 text-right pr-4"
           type="number"
           value={snText}
           onChange={e => setSnText(e.target.value)}
@@ -199,20 +201,18 @@ const HomomorphismSection = () => {
       <div className="text-center bg-gray-900 text-gray-500 border border-t-0 p-2 mx-2 flex flex-col relative">
         {result.map(([n, p], i) => (
           <div className="flex" key={i}>
-            <div className="text-center bg-gray-900 p-2 shadow-xl w-20 flex">
-              φ({n})=
-            </div>
-            <div className="text-center bg-gray-900 p-2 flex-1 shadow-xl rounded-t select-all">
+            <div className="text-center bg-gray-900 p-2 w-20 flex">φ({n})=</div>
+            <div className="text-center bg-gray-900 p-2 flex-1 select-all">
               {p2s(reducePermutation(p))}
             </div>
-            <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-20 text-right pr-4">
+            <div className="text-center bg-gray-900 p-2 w-20 text-right pr-4">
               #{range(1, sn).filter(n => mapPermutation(n, p) == n).length}
             </div>
           </div>
         ))}
       </div>
-      <div className="text-center bg-gray-900 border border-t-0 p-2 shadow-xl rounded-b mx-2 flex flex relative">
-        <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-64 flex">
+      <div className="text-center bg-gray-900 border border-t-0 p-2 rounded-b mx-2 flex flex relative">
+        <div className="text-center bg-gray-900 p-2 w-64 flex">
           Burnsides Lemma
         </div>
         <div className="text-center bg-gray-900 p-2 flex-1 w-12">
@@ -223,7 +223,7 @@ const HomomorphismSection = () => {
             )
             .reduce((a, b) => a + b, 0) / sides}
         </div>
-        <div className="text-center bg-gray-900 p-2 shadow-xl rounded-t w-64 text-right pr-4">
+        <div className="text-center bg-gray-900 p-2 w-64 text-right pr-4">
           #
           {result
             .map(
