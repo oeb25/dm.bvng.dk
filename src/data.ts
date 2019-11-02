@@ -66,19 +66,21 @@ export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
     return d;
   }
 
-  d = d.map(([t, m]) => {
-    const k = t == "r" ? n : 2;
-    // TODO: Do this in constant time
-    while (m < 0) {
-      m += k;
-    }
-    return [t, m % k];
-  });
-
   let complete = false;
 
   while (!complete) {
     complete = true;
+
+    d = d
+      .map(([t, m]) => {
+        const k = t == "r" ? n : 2;
+        // TODO: Do this in constant time
+        while (m < 0) {
+          m += k;
+        }
+        return [t, m % k] as Op;
+      })
+      .filter(([_, m]) => m);
 
     // NOTE: Fold r's and s's
     let i = 0;
@@ -87,7 +89,9 @@ export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
         b = d[i + 1];
       if (a[0] == b[0]) {
         d.splice(i, 1);
-        d[i][1] = (d[i][1] + b[1]) % n;
+
+        const k = a[0] == "r" ? n : 2;
+        d[i][1] = (d[i][1] + a[1]) % k;
         if (d[i][1] == 0) {
           d.splice(i, 1);
         }
@@ -108,8 +112,11 @@ export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
         while (m < 0) {
           m += n;
         }
-        d[i] = ["r", m];
+        d[i] = ["r", m % n];
         d[i + 1] = ["s", 1];
+        if (d[i][1] == 0) {
+          d.splice(i, 1);
+        }
         complete = false;
         break;
       } else {
@@ -129,7 +136,9 @@ export const parseDihedral = (src: string): Dihedral =>
     return [t, n];
   });
 
-export const d2s = (d: Dihedral) =>
-  d.length == 0
+export const d2s = (d: Dihedral) => {
+  d = d.filter(x => x[1]);
+  return d.length == 0
     ? "id"
-    : d.map(x => (x[1] == 0 ? "" : x[1] == 1 ? x[0] : x[0] + x[1])).join(" ");
+    : d.map(x => (x[1] == 1 ? x[0] : x[0] + x[1])).join(" ");
+};
