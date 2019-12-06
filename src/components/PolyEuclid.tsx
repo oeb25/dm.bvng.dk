@@ -5,7 +5,8 @@ import {
   parseDihedral,
   parsePoly,
   euclidieanAlgo,
-  fmtEuclid
+  fmtEuclid,
+  fmtPoly
 } from "~data";
 import { Section } from "./Section";
 import { Code } from "./Code";
@@ -60,12 +61,28 @@ export const PolyEuclid = () => {
       </div>
       <div className="text-center text-gray-500 border border-t-0 p-2 select-all rounded-b mx-2">
         {e.map((e, i) => (
-          <div key={i} className="border">
-            {fmtEuclid(e)
-              .split("\n")
-              .map((a, i) => (
-                <p key={i}>{a}</p>
+          // <div key={i} className="border">
+          //   {fmtEuclid(e)
+          //     .split("\n")
+          //     .map((a, i) => (
+          //       <p key={i}>{a}</p>
+          //     ))}
+          // </div>
+          <div key={i} className="border flex flex-col text-left">
+            <div className="flex">
+              {e[0].map((r, i) => (
+                <div className="flex-1" key={i}>
+                  {fmtPoly(r)}
+                </div>
               ))}
+            </div>
+            <div className="flex">
+              {e[1].map((r, i) => (
+                <div className="flex-1" key={i}>
+                  {fmtPoly(r)}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

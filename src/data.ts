@@ -130,9 +130,20 @@ export const fmtPoly = (a: Poly) =>
   isZero(a)
     ? "0"
     : a
-        .map((n, i) => (n == 0 ? "" : i == 0 ? n + "" : `${n}x^${i}`))
+        .map((n, i) =>
+          n == 1 && i >= 1
+            ? `x^${i}`
+            : n == 0
+            ? ""
+            : i == 1
+            ? `${n}x`
+            : i == 0
+            ? n + ""
+            : `${n}x^${i}`
+        )
         .filter(a => a)
-        .join(" + ");
+        .join(" + ")
+        .replace(/\^1(\s*)/, "$1");
 
 export const parsePoly = (src: string) => {
   const parts = src
@@ -149,8 +160,6 @@ export const parsePoly = (src: string) => {
     const x = part[2];
     const power = part[3] ? parseInt(part[3], 10) : x ? 1 : 0;
 
-    console.log({ coef, x, power });
-
     const q = new Array(power).fill(0);
     q[power] = coef;
     p = add(p, q);
@@ -158,8 +167,6 @@ export const parsePoly = (src: string) => {
 
   return p;
 };
-
-console.log(parsePoly("2 x + 3x^2"));
 
 export type EuclidRow = [Poly, Poly, Poly];
 export type Euclid = [EuclidRow, EuclidRow];
@@ -191,8 +198,6 @@ export const euclidieanAlgo = (a: Poly, b: Poly, base: number) => {
   const steps = [e];
 
   while (!isZero(e[0][0]) && iter-- > 0) {
-    console.log(fmtEuclid(e));
-
     const degA = degree(p1(e));
     const degB = degree(p2(e));
     if (degA >= degB) {
@@ -208,15 +213,12 @@ export const euclidieanAlgo = (a: Poly, b: Poly, base: number) => {
         if ((r * i + s) % base == 0) break;
       }
 
-      console.log(deltaDegree, i);
-
       if (i == base) {
         // TODO: WRONG
         throw "fuck";
       }
 
       const p = new Array(deltaDegree).fill(0).concat([i]);
-      console.log(p);
       e = modEuclid(rowOp(e, p), base);
     } else {
       e = swap(e);
