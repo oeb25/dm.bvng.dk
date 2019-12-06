@@ -101,3 +101,133 @@ export const d2s = (d: Dihedral) => {
     ? "id"
     : d.map(x => (x[1] == 1 ? x[0] : x[0] + x[1])).join(" ");
 };
+
+/* POLYNOMIAL */
+
+export type Poly = number[];
+
+export const coef = (a: Poly, i: number) => (a.length <= i ? 0 : a[i]);
+
+export const mulC = (a: Poly, n: number) => a.map(x => x * n);
+export const add = (a: Poly, b: Poly): Poly =>
+  a.length < b.length ? add(b, a) : a.map((x, i) => x + coef(b, i));
+export const sub = (a: Poly, b: Poly): Poly => add(a, mulC(b, -1));
+export const mulX = (a: Poly) => [0, ...a];
+export const mul = (xs: Poly, ys: Poly): Poly =>
+  xs.length == 0 || ys.length == 0
+    ? []
+    : add(mulC(ys, xs[0]), mulX(mul(xs.slice(1), ys)));
+export const mod = (a: Poly, b: number) => a.map(x => x % b);
+export const isZero = (a: Poly) => a.length == 0 || a.every(x => x == 0);
+export const degree = (a: Poly) => {
+  for (let i = a.length - 1; i > 0; i--) {
+    if (a[i] != 0) return i;
+  }
+  return 0;
+};
+
+export const fmtPoly = (a: Poly) =>
+  isZero(a)
+    ? "0"
+    : a
+        .map((n, i) => (n == 0 ? "" : i == 0 ? n + "" : `${n}x^${i}`))
+        .filter(a => a)
+        .join(" + ");
+
+export const parsePoly = (src: string) => {
+  const parts = src
+    .replace(/\s+/g, "")
+    .replace(/\^/g, "")
+    .split(/\s*\+\s*/g)
+    .map(s => /(\d*)(x?)(\d*)/g.exec(s))
+    .filter(a => a);
+
+  let p: Poly = [];
+
+  for (const part of parts as RegExpExecArray[]) {
+    const coef = part[1] ? parseInt(part[1], 10) : 1;
+    const x = part[2];
+    const power = part[3] ? parseInt(part[3], 10) : x ? 1 : 0;
+
+    console.log({ coef, x, power });
+
+    const q = new Array(power).fill(0);
+    q[power] = coef;
+    p = add(p, q);
+  }
+
+  return p;
+};
+
+console.log(parsePoly("2 x + 3x^2"));
+
+export type EuclidRow = [Poly, Poly, Poly];
+export type Euclid = [EuclidRow, EuclidRow];
+
+export const swap = (e: Euclid): Euclid => [e[1], e[0]];
+export const rowOp = (e: Euclid, n: Poly): Euclid => [
+  e[0].map((r, i) => add(r, mul(n, e[1][i]))) as EuclidRow,
+  e[1]
+];
+export const modEuclid = (e: Euclid, base: number) =>
+  e.map(r => r.map(p => mod(p, base))) as Euclid;
+
+export const fmtEuclid = (e: Euclid) =>
+  e.map(r => r.map(fmtPoly).join(" | ")).join("\n");
+
+const p1 = (e: Euclid) => e[0][0];
+const p2 = (e: Euclid) => e[1][0];
+
+export const euclidieanAlgo = (a: Poly, b: Poly, base: number) => {
+  const one: Poly = [1];
+  const zero: Poly = [];
+  let e: Euclid = [
+    [a, one, zero],
+    [b, zero, one]
+  ];
+
+  let iter = 15;
+
+  const steps = [e];
+
+  while (!isZero(e[0][0]) && iter-- > 0) {
+    console.log(fmtEuclid(e));
+
+    const degA = degree(p1(e));
+    const degB = degree(p2(e));
+    if (degA >= degB) {
+      const deltaDegree = degA - degB;
+      const m = new Array(deltaDegree).fill(0).concat(p2(e));
+      const r = coef(m, degA);
+      const s = coef(p1(e), degA);
+
+      // solve r * q + s = 0 mod base
+
+      let i;
+      for (i = 1; i < base; i++) {
+        if ((r * i + s) % base == 0) break;
+      }
+
+      console.log(deltaDegree, i);
+
+      if (i == base) {
+        // TODO: WRONG
+        throw "fuck";
+      }
+
+      const p = new Array(deltaDegree).fill(0).concat([i]);
+      console.log(p);
+      e = modEuclid(rowOp(e, p), base);
+    } else {
+      e = swap(e);
+    }
+    steps.push(e);
+  }
+
+  return steps;
+};
+
+const a = [0, 0, 0, 1];
+const b = [0, 1, 1];
+
+// console.log(a, b, fmtEuclid(euclidieanAlgo(a, b, 2)));

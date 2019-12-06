@@ -2,6 +2,7 @@ import * as React from "react";
 import { PermutationSection } from "./PermutationSection";
 import { DihedralSection } from "./DihedralSection";
 import { HomomorphismSection } from "./HomomorphismSection";
+import { PolyEuclid } from "./PolyEuclid";
 
 export const App = () => (
   <div className="max-w-lg w-screen min-h-screen flex flex-col mx-auto pb-3">
@@ -18,6 +19,7 @@ export const App = () => (
     <div className="flex flex-col flex-1">
       <PermutationSection />
       <DihedralSection />
+      <PolyEuclid />
       <HomomorphismSection />
     </div>
 
