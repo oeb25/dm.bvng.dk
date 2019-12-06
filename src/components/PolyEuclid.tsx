@@ -22,7 +22,10 @@ export const PolyEuclid = () => {
   const p1 = parsePoly(p1Src);
   const p2 = parsePoly(p2Src);
 
-  const e = euclidieanAlgo(p1, p2, sides);
+  let e = null;
+  try {
+    e = euclidieanAlgo(p1, p2, sides);
+  } catch (e) {}
 
   return (
     <Section
@@ -60,31 +63,33 @@ export const PolyEuclid = () => {
         />
       </div>
       <div className="text-center text-gray-500 border border-t-0 p-2 rounded-b mx-2">
-        {e.map((e, i) => (
-          // <div key={i} className="border">
-          //   {fmtEuclid(e)
-          //     .split("\n")
-          //     .map((a, i) => (
-          //       <p key={i}>{a}</p>
-          //     ))}
-          // </div>
-          <div key={i} className="border flex flex-col text-left">
-            <div className="flex">
-              {e[0].map((r, i) => (
-                <div className="flex-1 select-all" key={i}>
-                  {fmtPoly(r)}
+        {e
+          ? e.map((e, i) => (
+              // <div key={i} className="border">
+              //   {fmtEuclid(e)
+              //     .split("\n")
+              //     .map((a, i) => (
+              //       <p key={i}>{a}</p>
+              //     ))}
+              // </div>
+              <div key={i} className="border flex flex-col text-left">
+                <div className="flex">
+                  {e[0].map((r, i) => (
+                    <div className="flex-1 select-all" key={i}>
+                      {fmtPoly(r)}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="flex">
-              {e[1].map((r, i) => (
-                <div className="flex-1 select-all" key={i}>
-                  {fmtPoly(r)}
+                <div className="flex">
+                  {e[1].map((r, i) => (
+                    <div className="flex-1 select-all" key={i}>
+                      {fmtPoly(r)}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        ))}
+              </div>
+            ))
+          : "Can't be solved"}
       </div>
     </Section>
   );
