@@ -59,7 +59,7 @@ export const PolyEuclid = () => {
           onChange={e => setP2(e.target.value)}
         />
       </div>
-      <div className="text-center text-gray-500 border border-t-0 p-2 select-all rounded-b mx-2">
+      <div className="text-center text-gray-500 border border-t-0 p-2 rounded-b mx-2">
         {e.map((e, i) => (
           // <div key={i} className="border">
           //   {fmtEuclid(e)
@@ -71,14 +71,14 @@ export const PolyEuclid = () => {
           <div key={i} className="border flex flex-col text-left">
             <div className="flex">
               {e[0].map((r, i) => (
-                <div className="flex-1" key={i}>
+                <div className="flex-1 select-all" key={i}>
                   {fmtPoly(r)}
                 </div>
               ))}
             </div>
             <div className="flex">
               {e[1].map((r, i) => (
-                <div className="flex-1" key={i}>
+                <div className="flex-1 select-all" key={i}>
                   {fmtPoly(r)}
                 </div>
               ))}
