@@ -72,7 +72,7 @@ export const PolyEuclid = () => {
               //       <p key={i}>{a}</p>
               //     ))}
               // </div>
-              <div key={i} className="border flex flex-col text-left">
+              <div key={i} className="border flex flex-col text-left p-2">
                 <div className="flex">
                   {e[0].map((r, i) => (
                     <div className="flex-1 select-all" key={i}>
