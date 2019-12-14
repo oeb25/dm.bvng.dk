@@ -73,7 +73,7 @@ export const PolyOrder = () => {
           ? o.map((a, i) => (
               <div className="flex" key={i}>
                 <div className="text-center p-2 w-64 flex">
-                  ({fmtPoly(p1)})^{i} =
+                  ({fmtPoly(p1)})^{i + 1} =
                 </div>
                 <div className="text-center p-2 flex">{fmtPoly(a)}</div>
                 <div className="text-center p-2 w-64 flex"></div>
