@@ -129,9 +129,11 @@ export const degree = (a: Poly) => {
 export const fmtPoly = (a: Poly) =>
   isZero(a)
     ? "0"
-    : a
-        .map((n, i) =>
-          n == 1 && i >= 1
+    : [...a]
+        .reverse()
+        .map((n, j) => {
+          const i = a.length - j - 1;
+          return n == 1 && i >= 1
             ? `x^${i}`
             : n == 0
             ? ""
@@ -139,8 +141,8 @@ export const fmtPoly = (a: Poly) =>
             ? `${n}x`
             : i == 0
             ? n + ""
-            : `${n}x^${i}`
-        )
+            : `${n}x^${i}`;
+        })
         .filter(a => a)
         .join(" + ")
         .replace(/\^1(\s*)/, "$1");

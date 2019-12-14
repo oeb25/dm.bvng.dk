@@ -73,20 +73,15 @@ export const PolyEuclid = () => {
               //     ))}
               // </div>
               <div key={i} className="border flex flex-col text-left p-2">
-                <div className="flex">
-                  {e[0].map((r, i) => (
-                    <div className="flex-1 select-all" key={i}>
-                      {fmtPoly(r)}
-                    </div>
-                  ))}
-                </div>
-                <div className="flex">
-                  {e[1].map((r, i) => (
-                    <div className="flex-1 select-all" key={i}>
-                      {fmtPoly(r)}
-                    </div>
-                  ))}
-                </div>
+                {e.map((e, i) => (
+                  <div className="flex" key={i}>
+                    {e.map((r, i) => (
+                      <div className="flex-1 select-all" key={i}>
+                        {fmtPoly(r)}
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             ))
           : "Can't be solved"}
