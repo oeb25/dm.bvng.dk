@@ -11,6 +11,7 @@ import {
 } from "~data";
 import { Section } from "./Section";
 import { Code } from "./Code";
+import { PolyF } from "./Poly";
 
 export const PolyEuclid = () => {
   const [sidesText, setSidesText] = React.useState("5");
@@ -70,7 +71,7 @@ export const PolyEuclid = () => {
       <div className="text-center border border-t-0 p-2 text-gray-500 rounded-b mx-2 flex relative">
         <div className="text-center p-2 w-12 flex">=</div>
         <div className="text-center p-2 flex flex-1 justify-center">
-          {e ? fmtPoly(divPoly(p1, p2, sides)!) : ""}
+          {e ? <PolyF p={divPoly(p1, p2, sides)!} /> : ""}
         </div>
         <div className="text-center p-2 w-12 flex"></div>
       </div>
@@ -89,7 +90,7 @@ export const PolyEuclid = () => {
                   <div className="flex" key={i}>
                     {e.map((r, i) => (
                       <div className="flex-1 select-all" key={i}>
-                        {fmtPoly(r)}
+                        <PolyF p={r} />
                       </div>
                     ))}
                   </div>

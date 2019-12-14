@@ -11,6 +11,7 @@ import {
 } from "~data";
 import { Section } from "./Section";
 import { Code } from "./Code";
+import { PolyF } from "./Poly";
 
 export const PolyIrre = () => {
   const [sidesText, setSidesText] = React.useState("5");
@@ -49,8 +50,12 @@ export const PolyIrre = () => {
       <div className="text-center text-gray-500 border border-t-0 p-2 select-all rounded-b mx-2">
         (
         {irreducable(p1, sides)
-          .map(fmtPoly)
-          .join(")(")}
+          .map(a => <PolyF p={a} />)
+          .reduce((a, b) => (
+            <>
+              {a})({b}
+            </>
+          ))}
         )
       </div>
     </Section>

@@ -12,6 +12,7 @@ import {
 } from "~data";
 import { Section } from "./Section";
 import { Code } from "./Code";
+import { PolyF } from "./Poly";
 
 export const PolyOrder = () => {
   const [sidesText, setSidesText] = React.useState("2");
@@ -73,9 +74,13 @@ export const PolyOrder = () => {
           ? o.map((a, i) => (
               <div className="flex" key={i}>
                 <div className="text-center p-2 w-64 flex">
-                  ({fmtPoly(p1)})^{i + 1} =
+                  <span>
+                    (<PolyF p={p1} />)<sup>{i + 1}</sup> =
+                  </span>
                 </div>
-                <div className="text-center p-2 flex">{fmtPoly(a)}</div>
+                <div className="text-center p-2 flex">
+                  <PolyF p={a} />
+                </div>
                 <div className="text-center p-2 w-64 flex"></div>
               </div>
             ))

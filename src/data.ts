@@ -145,25 +145,6 @@ export const polyMod = (a: Poly, b: Poly, base: number): Poly => {
 
     a = mod(add(a, q), base);
     degA = degree(a);
-    // const deltaDegree = degA - degB;
-    // const m = new Array(deltaDegree).fill(0).concat(b);
-    // const r = coef(m, degA);
-    // const s = coef(a, degA);
-
-    // // solve r * q + s = 0 mod base
-
-    // let i;
-    // for (i = 1; i < base; i++) {
-    //   if ((r * i + s) % base == 0) break;
-    // }
-
-    // if (i == base) {
-    //   // TODO: WRONG
-    //   throw "fuck";
-    // }
-
-    // const p = new Array(deltaDegree).fill(0).concat([i]);
-    // return mod(add(a, invMod(mul(p, b), base)), base);
   }
   return a;
 };
