@@ -6,7 +6,8 @@ import {
   parsePoly,
   euclidieanAlgo,
   fmtEuclid,
-  fmtPoly
+  fmtPoly,
+  divPoly
 } from "~data";
 import { Section } from "./Section";
 import { Code } from "./Code";
@@ -54,13 +55,24 @@ export const PolyEuclid = () => {
           onChange={e => setSidesText(e.target.value)}
         />
       </div>
-      <div className="text-center text-gray-200 border flex mx-2">
-        <input
-          className="bg-gray-900 text-center pl-12 p-2 flex-1 rounded-t mr-12"
-          type="text"
-          value={p2Src}
-          onChange={e => setP2(e.target.value)}
-        />
+      <div className="text-center border border-t-0 p-2 rounded-b mx-2 flex flex relative">
+        <div className="text-center p-2 w-64 flex">/</div>
+        <div className="text-center p-2 flex">
+          <input
+            className="bg-gray-900 text-center flex-1"
+            type="text"
+            value={p2Src}
+            onChange={e => setP2(e.target.value)}
+          />
+        </div>
+        <div className="text-center p-2 w-64 flex"></div>
+      </div>
+      <div className="text-center border border-t-0 p-2 text-gray-500 rounded-b mx-2 flex flex relative">
+        <div className="text-center p-2 w-64 flex">=</div>
+        <div className="text-center p-2 flex">
+          {e ? fmtPoly(divPoly(p1, p2, sides)!) : ""}
+        </div>
+        <div className="text-center p-2 w-64 flex"></div>
       </div>
       <div className="text-center text-gray-500 border border-t-0 p-2 rounded-b mx-2">
         {e
