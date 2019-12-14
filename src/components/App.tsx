@@ -4,6 +4,7 @@ import { DihedralSection } from "./DihedralSection";
 import { HomomorphismSection } from "./HomomorphismSection";
 import { PolyEuclid } from "./PolyEuclid";
 import { PolyIrre } from "./PolyIrre";
+import { PolyOrder } from "./PolyOrder";
 
 export const App = () => (
   <div className="max-w-lg w-screen min-h-screen flex flex-col mx-auto pb-3">
@@ -21,6 +22,7 @@ export const App = () => (
       <PermutationSection />
       <DihedralSection />
       <PolyIrre />
+      <PolyOrder />
       <PolyEuclid />
       <HomomorphismSection />
     </div>

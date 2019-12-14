@@ -118,12 +118,71 @@ export const mul = (xs: Poly, ys: Poly): Poly =>
     ? []
     : add(mulC(ys, xs[0]), mulX(mul(xs.slice(1), ys)));
 export const mod = (a: Poly, b: number) => a.map(x => x % b);
+export const mulMod = (xs: Poly, ys: Poly, base: number): Poly =>
+  mod(mul(xs, ys), base);
 export const isZero = (a: Poly) => a.length == 0 || a.every(x => x == 0);
 export const degree = (a: Poly) => {
   for (let i = a.length - 1; i > 0; i--) {
     if (a[i] != 0) return i;
   }
   return 0;
+};
+export const polyEq = (a: Poly, b: Poly): boolean =>
+  degree(a) == degree(b) &&
+  simplify(a).reduce((ok, x, i) => ok && x == b[i], true as boolean);
+export const invMod = (a: Poly, base: number) =>
+  a.map(f => (f ? (base - f) % base : 0)) as Poly;
+export const simplify = (a: Poly) => a.slice(0, degree(a));
+
+export const polyMod = (a: Poly, b: Poly, base: number): Poly => {
+  let degA = degree(a);
+  const degB = degree(b);
+  let i = 10;
+  while (degA >= degB && i-- != 0) {
+    if (i <= 0) throw "faaak";
+    const delta = degA - degB;
+    const q = new Array(delta).fill(0).concat(b);
+
+    a = mod(add(a, q), base);
+    degA = degree(a);
+    // const deltaDegree = degA - degB;
+    // const m = new Array(deltaDegree).fill(0).concat(b);
+    // const r = coef(m, degA);
+    // const s = coef(a, degA);
+
+    // // solve r * q + s = 0 mod base
+
+    // let i;
+    // for (i = 1; i < base; i++) {
+    //   if ((r * i + s) % base == 0) break;
+    // }
+
+    // if (i == base) {
+    //   // TODO: WRONG
+    //   throw "fuck";
+    // }
+
+    // const p = new Array(deltaDegree).fill(0).concat([i]);
+    // return mod(add(a, invMod(mul(p, b), base)), base);
+  }
+  return a;
+};
+
+export const order = (a: Poly, g: Poly, base: number) => {
+  const samps = [];
+
+  samps.push(a);
+
+  let next = polyMod(mul(a, a), g, base);
+
+  let i = 20;
+
+  while (!polyEq(a, next) && i-- > 0) {
+    samps.push(next);
+    next = polyMod(mul(a, next), g, base);
+  }
+
+  return samps;
 };
 
 export const applyPoly = (a: Poly, n: number) =>
