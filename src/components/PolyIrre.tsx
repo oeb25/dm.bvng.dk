@@ -14,7 +14,7 @@ import { Code } from "./Code";
 
 export const PolyIrre = () => {
   const [sidesText, setSidesText] = React.useState("5");
-  const sides = parseInt(sidesText) || 1;
+  const sides = Math.max(parseInt(sidesText) || 2, 2);
 
   const [p1Src, setP1] = React.useState("x^3");
   const p1 = parsePoly(p1Src);

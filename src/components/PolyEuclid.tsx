@@ -15,7 +15,7 @@ import { Code } from "./Code";
 export const PolyEuclid = () => {
   const [sidesText, setSidesText] = React.useState("5");
   const [src, setSrc] = React.useState("r-4 s3 r r^25");
-  const sides = parseInt(sidesText) || 1;
+  const sides = Math.max(parseInt(sidesText) || 2, 2);
 
   const [p1Src, setP1] = React.useState("x^3");
   const [p2Src, setP2] = React.useState("x + x^2");
