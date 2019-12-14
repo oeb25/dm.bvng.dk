@@ -67,16 +67,16 @@ export const PolyEuclid = () => {
         </div>
         <div className="text-center p-2 w-64 flex"></div>
       </div>
-      <div className="text-center border border-t-0 p-2 text-gray-500 rounded-b mx-2 flex flex relative">
-        <div className="text-center p-2 w-64 flex">=</div>
-        <div className="text-center p-2 flex">
+      <div className="text-center border border-t-0 p-2 text-gray-500 rounded-b mx-2 flex relative">
+        <div className="text-center p-2 w-12 flex">=</div>
+        <div className="text-center p-2 flex flex-1 justify-center">
           {e ? fmtPoly(divPoly(p1, p2, sides)!) : ""}
         </div>
-        <div className="text-center p-2 w-64 flex"></div>
+        <div className="text-center p-2 w-12 flex"></div>
       </div>
       <div className="text-center text-gray-500 border border-t-0 p-2 rounded-b mx-2">
         {e
-          ? e.map((e, i) => (
+          ? e.steps.map((e, i) => (
               // <div key={i} className="border">
               //   {fmtEuclid(e)
               //     .split("\n")

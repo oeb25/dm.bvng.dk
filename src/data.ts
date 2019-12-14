@@ -270,6 +270,8 @@ export const euclidieanAlgo = (a: Poly, b: Poly, base: number) => {
 
   const steps = [e];
 
+  let flipped = false;
+
   while (!isZero(e[0][0]) && iter-- > 0) {
     const degA = degree(p1(e));
     const degB = degree(p2(e));
@@ -294,20 +296,20 @@ export const euclidieanAlgo = (a: Poly, b: Poly, base: number) => {
       const p = new Array(deltaDegree).fill(0).concat([i]);
       e = modEuclid(rowOp(e, p), base);
     } else {
+      flipped = !flipped;
       e = swap(e);
     }
     steps.push(e);
   }
 
-  return steps;
+  const result = invMod(steps[steps.length - 1][flipped ? 1 : 0][2], base);
+
+  return { steps, result };
 };
 
 export const divPoly = (a: Poly, b: Poly, base: number) => {
   try {
-    const res = euclidieanAlgo(a, b, base);
-    return res[res.length - 1][0][2].map(a =>
-      a ? (base - a) % base : 0
-    ) as Poly;
+    return euclidieanAlgo(a, b, base).result;
   } catch (e) {
     return null;
   }
