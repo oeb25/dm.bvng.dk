@@ -126,6 +126,17 @@ export const degree = (a: Poly) => {
   return 0;
 };
 
+export const applyPoly = (a: Poly, n: number) =>
+  a.map((f, i) => f * Math.pow(n, i)).reduce((a, b) => a + b, 0);
+
+export const findRoots = (a: Poly, base: number): number[] => {
+  const roots = [];
+  for (let i = 0; i < base; i++) {
+    if (applyPoly(a, i) % base == 0) roots.push(i);
+  }
+  return roots;
+};
+
 export const fmtPoly = (a: Poly) =>
   isZero(a)
     ? "0"
@@ -231,7 +242,24 @@ export const euclidieanAlgo = (a: Poly, b: Poly, base: number) => {
   return steps;
 };
 
-const a = [0, 0, 0, 1];
-const b = [0, 1, 1];
+export const divPoly = (a: Poly, b: Poly, base: number) => {
+  try {
+    const res = euclidieanAlgo(a, b, base);
+    return res[res.length - 1][0][2].map(a =>
+      a ? (base - a) % base : 0
+    ) as Poly;
+  } catch (e) {
+    return null;
+  }
+};
 
-// console.log(a, b, fmtEuclid(euclidieanAlgo(a, b, 2)));
+export const irreducable = (a: Poly, base: number) => {
+  const roots = findRoots(a, base);
+  const parts = [];
+  for (const root of roots) {
+    const r = [(base - root) % base, 1] as Poly;
+    parts.push(r);
+    parts.push(divPoly(a, r, base)!);
+  }
+  return parts;
+};
