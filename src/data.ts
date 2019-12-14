@@ -162,6 +162,7 @@ export const parsePoly = (src: string) => {
   const parts = src
     .replace(/\s+/g, "")
     .replace(/\^/g, "")
+    .replace(/\*/g, "")
     .split(/\s*\+\s*/g)
     .map(s => /(\d*)(x?)(\d*)/g.exec(s))
     .filter(a => a);
