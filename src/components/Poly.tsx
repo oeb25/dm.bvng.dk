@@ -4,7 +4,9 @@ import { Poly, fmtPoly, simplify, degree } from "~data";
 export const PolyF: React.FC<{ p: Poly }> = ({ p }) => {
   return (
     <span>
-      {degree(p) == 0
+      {!p
+        ? "..."
+        : degree(p) == 0
         ? p[0]
         : p
             .map((f, i) => {

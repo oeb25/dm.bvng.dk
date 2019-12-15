@@ -73,15 +73,15 @@ export const PolyOrder = () => {
         {o
           ? o.map((a, i) => (
               <div className="flex" key={i}>
-                <div className="text-center p-2 w-64 flex">
+                <div className="text-center p-2 w-32 flex">
                   <span>
                     (<PolyF p={p1} />)<sup>{i + 1}</sup> =
                   </span>
                 </div>
-                <div className="text-center p-2 flex">
+                <div className="text-center p-2 flex flex-1 justify-center">
                   <PolyF p={a} />
                 </div>
-                <div className="text-center p-2 w-64 flex"></div>
+                <div className="text-center p-2 w-32 flex"></div>
               </div>
             ))
           : "Not possible"}
