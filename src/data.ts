@@ -54,9 +54,9 @@ export const p2s = (p: Permutation) =>
 export const parsePermutation = (src: string) =>
   src
     .split(/[\(\)\-]/g)
-    .filter(x => x.trim())
-    .map(x => x.split(/[ ,.]+/g))
-    .map(xs => xs.filter(x => x.trim()).map(x => parseInt(x)));
+    .filter((x) => x.trim())
+    .map((x) => x.split(/[ ,.]+/g))
+    .map((xs) => xs.filter((x) => x.trim()).map((x) => parseInt(x)));
 
 /* DIHEDRAL GROUPS */
 
@@ -88,7 +88,7 @@ export const reduceDihedral = (d: Dihedral, n: number): Dihedral => {
 };
 
 export const parseDihedral = (src: string): Dihedral =>
-  (src.match(/([sr]\^?\(?-?\d*\)?)/g) || []).map(x => {
+  (src.match(/([sr]\^?\(?-?\d*\)?)/g) || []).map((x) => {
     const t = x[0] as "r" | "s";
     const s = x.substring(1).replace(/[\^\(\)]/g, "");
     const n = parseInt((s == "-" ? "-1" : s) || "1");
@@ -96,10 +96,10 @@ export const parseDihedral = (src: string): Dihedral =>
   });
 
 export const d2s = (d: Dihedral) => {
-  d = d.filter(x => x[1]);
+  d = d.filter((x) => x[1]);
   return d.length == 0
     ? "id"
-    : d.map(x => (x[1] == 1 ? x[0] : x[0] + x[1])).join(" ");
+    : d.map((x) => (x[1] == 1 ? x[0] : x[0] + x[1])).join(" ");
 };
 
 /* POLYNOMIAL */
@@ -108,7 +108,7 @@ export type Poly = number[];
 
 export const coef = (a: Poly, i: number) => (a.length <= i ? 0 : a[i]);
 
-export const mulC = (a: Poly, n: number) => a.map(x => x * n);
+export const mulC = (a: Poly, n: number) => a.map((x) => x * n);
 export const add = (a: Poly, b: Poly): Poly =>
   a.length < b.length ? add(b, a) : a.map((x, i) => x + coef(b, i));
 export const sub = (a: Poly, b: Poly): Poly => add(a, mulC(b, -1));
@@ -117,10 +117,10 @@ export const mul = (xs: Poly, ys: Poly): Poly =>
   xs.length == 0 || ys.length == 0
     ? []
     : add(mulC(ys, xs[0]), mulX(mul(xs.slice(1), ys)));
-export const mod = (a: Poly, b: number) => a.map(x => x % b);
+export const mod = (a: Poly, b: number) => a.map((x) => x % b);
 export const mulMod = (xs: Poly, ys: Poly, base: number): Poly =>
   mod(mul(xs, ys), base);
-export const isZero = (a: Poly) => a.length == 0 || a.every(x => x == 0);
+export const isZero = (a: Poly) => a.length == 0 || a.every((x) => x == 0);
 export const degree = (a: Poly) => {
   for (let i = a.length - 1; i > 0; i--) {
     if (a[i] != 0) return i;
@@ -131,7 +131,7 @@ export const polyEq = (a: Poly, b: Poly): boolean =>
   degree(a) == degree(b) &&
   simplify(a).reduce((ok, x, i) => ok && x == b[i], true as boolean);
 export const invMod = (a: Poly, base: number) =>
-  a.map(f => (f ? (base - f) % base : 0)) as Poly;
+  a.map((f) => (f ? (base - f) % base : 0)) as Poly;
 export const simplify = (a: Poly) => a.slice(0, degree(a));
 
 export const polyMod = (a: Poly, b: Poly, base: number): Poly => {
@@ -156,7 +156,7 @@ export const order = (a: Poly, g: Poly, base: number) => {
 
   let next = polyMod(mul(a, a), g, base);
 
-  let i = 20;
+  let i = 64;
 
   while (!polyEq(a, next) && i-- > 0) {
     samps.push(next);
@@ -194,7 +194,7 @@ export const fmtPoly = (a: Poly) =>
             ? n + ""
             : `${n}x^${i}`;
         })
-        .filter(a => a)
+        .filter((a) => a)
         .join(" + ")
         .replace(/\^1(\s*)/, "$1");
 
@@ -204,8 +204,8 @@ export const parsePoly = (src: string) => {
     .replace(/\^/g, "")
     .replace(/\*/g, "")
     .split(/\s*\+\s*/g)
-    .map(s => /(\d*)(x?)(\d*)/g.exec(s))
-    .filter(a => a);
+    .map((s) => /(\d*)(x?)(\d*)/g.exec(s))
+    .filter((a) => a);
 
   let p: Poly = [];
 
@@ -228,13 +228,13 @@ export type Euclid = [EuclidRow, EuclidRow];
 export const swap = (e: Euclid): Euclid => [e[1], e[0]];
 export const rowOp = (e: Euclid, n: Poly): Euclid => [
   e[0].map((r, i) => add(r, mul(n, e[1][i]))) as EuclidRow,
-  e[1]
+  e[1],
 ];
 export const modEuclid = (e: Euclid, base: number) =>
-  e.map(r => r.map(p => mod(p, base))) as Euclid;
+  e.map((r) => r.map((p) => mod(p, base))) as Euclid;
 
 export const fmtEuclid = (e: Euclid) =>
-  e.map(r => r.map(fmtPoly).join(" | ")).join("\n");
+  e.map((r) => r.map(fmtPoly).join(" | ")).join("\n");
 
 const p1 = (e: Euclid) => e[0][0];
 const p2 = (e: Euclid) => e[1][0];
@@ -244,7 +244,7 @@ export const euclidieanAlgo = (a: Poly, b: Poly, base: number) => {
   const zero: Poly = [];
   let e: Euclid = [
     [a, one, zero],
-    [b, zero, one]
+    [b, zero, one],
   ];
 
   let iter = 15;
